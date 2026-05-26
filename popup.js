@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const output = document.getElementById('output');
   const statusBadge = document.getElementById('status');
 
+  const CHECK_ICON = '<svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 L9 17 L20 6"/></svg>';
+  const X_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 L6 18"/><path d="M6 6 L18 18"/></svg>';
+  const SPINNER_ICON = '<svg class="spinner-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" opacity="0.75"/></svg>';
+
   let lastResult = null;
 
   function updateTokenCount() {
@@ -18,15 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
     tokenCount.textContent = tokens.toLocaleString() + ' GPT tokens';
   }
 
-  function setStatus(text, cls) {
-    statusBadge.textContent = text;
+  function setStatus(html, cls) {
+    statusBadge.innerHTML = html;
     statusBadge.className = 'badge' + (cls ? ' ' + cls : '');
+  }
+
+  function flashCheckmark() {
+    statusBadge.innerHTML = CHECK_ICON;
+    statusBadge.className = 'badge success copying';
+    setTimeout(() => statusBadge.classList.remove('copying'), 400);
   }
 
   function showError(msg) {
     error.textContent = msg;
     error.classList.remove('hidden');
-    setStatus('Error', 'error');
+    setStatus(X_ICON, 'error');
   }
 
   function hideError() {
@@ -40,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     copyBtn.disabled = true;
     downloadBtn.disabled = true;
     hideError();
-    setStatus('Extracting...');
+    setStatus(SPINNER_ICON);
   }
 
   function showResult(result) {
@@ -57,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTokenCount();
     copyBtn.disabled = false;
     downloadBtn.disabled = false;
-    setStatus('Done', 'success');
+    setStatus(CHECK_ICON, 'success');
   }
 
   async function extract() {
@@ -81,14 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!lastResult?.content) return;
     try {
       await navigator.clipboard.writeText(lastResult.content);
-      setStatus('Copied!', 'success');
-      setTimeout(() => setStatus('Done', 'success'), 1500);
     } catch {
       output.select();
       document.execCommand('copy');
-      setStatus('Copied!', 'success');
-      setTimeout(() => setStatus('Done', 'success'), 1500);
     }
+    flashCheckmark();
   });
 
   downloadBtn.addEventListener('click', () => {
@@ -101,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
-    setStatus('Downloaded', 'success');
+    setStatus(CHECK_ICON, 'success');
   });
 
   // Auto-extract on open
