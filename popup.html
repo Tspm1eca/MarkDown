@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MarkDown</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <img class="logo" src="icons/icon32.png" alt="MarkDown" width="20" height="20">
+      <h1>MarkDown</h1>
+    </div>
+    <span class="badge" id="status">Ready</span>
+  </div>
+
+  <div class="actions">
+    <div class="actions-left">
+      <button id="extractBtn" class="btn primary">Extract</button>
+      <button id="copyBtn" class="btn" disabled>Copy</button>
+      <button id="downloadBtn" class="btn" disabled>Download</button>
+    </div>
+    <span class="meta-info hidden" id="metaInfo">
+      <span id="tokenCount"></span>
+      <span class="meta-sep">｜</span>
+      <span id="charCount"></span>
+    </span>
+  </div>
+
+  <div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+    <span>Extracting content...</span>
+  </div>
+
+  <div id="error" class="error hidden"></div>
+
+  <textarea id="output" class="output hidden" readonly placeholder="Click Extract to convert this page to Markdown..."></textarea>
+
+  <script src="lib/gpt-tokenizer.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
