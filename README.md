@@ -3,7 +3,9 @@
 </p>
 <h1 align="center">MarkDown 網頁轉Markdown格式</h1>
 
-Chrome 擴充功能：一鍵將網頁內容轉換為 Markdown 格式。
+<p align="center">
+<img width="584" height="448" alt="PixPin_2026-05-27_14-39-35" src="https://github.com/user-attachments/assets/b656eae1-89bf-4025-a275-87f0f69b17ff" />
+</p>
 
 ## ✨ 功能
 
